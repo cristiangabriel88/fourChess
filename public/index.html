@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FourChess — four-player chess</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.85em' font-size='85' fill='%23f0a832'%3E%E2%99%9B%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <header id="topbar">
+      <div class="wordmark" aria-label="FourChess">
+        <span class="mark-n">F</span><span class="mark-e">O</span><span class="mark-s">U</span><span class="mark-w">R</span><span class="mark-rest">CHESS</span>
+      </div>
+      <div id="conn-status" class="conn" data-state="connecting">connecting…</div>
+    </header>
+
+    <!-- HOME -->
+    <main id="screen-home" class="screen">
+      <div class="home-card">
+        <div class="home-board" aria-hidden="true">
+          <span class="hb hb-n"></span><span class="hb hb-w"></span><span class="hb hb-c"></span><span class="hb hb-e"></span><span class="hb hb-s"></span>
+        </div>
+        <h1>Four armies.<br>One empty board.</h1>
+        <p class="tagline">Chess for 2–4 players on a cross-shaped board. Every army starts
+        outside the center — capture the last king standing.</p>
+        <div class="home-actions">
+          <button id="btn-create" class="btn btn-primary">Create game</button>
+          <form id="join-form" class="join-row">
+            <input id="join-code" type="text" inputmode="latin" autocomplete="off"
+                   spellcheck="false" maxlength="6" placeholder="INVITE CODE" aria-label="Invite code">
+            <button type="submit" class="btn">Join</button>
+          </form>
+          <button id="btn-resume" class="btn btn-ghost hidden">Resume last game</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- LOBBY -->
+    <main id="screen-lobby" class="screen hidden">
+      <div class="lobby-card">
+        <p class="lobby-label">Invite code</p>
+        <div class="code-row">
+          <span id="lobby-code" class="code-big">——————</span>
+          <button id="btn-copy-lobby" class="btn btn-ghost" title="Copy invite code">Copy</button>
+        </div>
+        <ul id="lobby-seats" class="seat-grid"></ul>
+        <div class="lobby-foot">
+          <p id="lobby-hint" class="lobby-hint">Waiting for players… 2–4 can play.</p>
+          <button id="btn-start" class="btn btn-primary" disabled>Start game</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- GAME -->
+    <main id="screen-game" class="screen hidden">
+      <button id="btn-exit" class="btn btn-ghost btn-small btn-exit" title="Exit game">✕ Exit</button>
+      <div id="game-layout">
+        <div id="board-frame">
+          <div id="board" role="grid" aria-label="FourChess board"></div>
+        </div>
+        <aside id="hud">
+          <div id="turn-banner" class="turn-banner">—</div>
+          <ul id="player-list" class="player-list"></ul>
+          <section class="hud-block">
+            <h2 class="hud-title">Captured</h2>
+            <div id="captured-tray" class="captured-tray"><span class="tray-empty">No captures yet</span></div>
+          </section>
+          <section class="hud-block hud-code">
+            <h2 class="hud-title">Invite code</h2>
+            <div class="code-row code-row-small">
+              <span id="game-code" class="code-small">——————</span>
+              <button id="btn-copy-game" class="btn btn-ghost btn-small" title="Copy invite code">Copy</button>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <!-- GAME OVER -->
+  <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+    <div class="overlay-card">
+      <div id="overlay-crown" class="overlay-crown">♛</div>
+      <h2 id="overlay-title">Game over</h2>
+      <p id="overlay-sub"></p>
+      <button id="btn-new-game" class="btn btn-primary">New game</button>
+    </div>
+  </div>
+
+  <!-- EXIT CONFIRMATION -->
+  <div id="exit-confirm" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="exit-title">
+    <div class="overlay-card confirm-card">
+      <h2 id="exit-title">Leave this game?</h2>
+      <p>You'll return to the home screen. You can come back with the invite code or “Resume last game”.</p>
+      <div class="confirm-actions">
+        <button id="btn-exit-cancel" class="btn">Stay</button>
+        <button id="btn-exit-confirm" class="btn btn-danger">Leave game</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <script src="vendor/socket.io.min.js"></script>
+  <script src="game.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
